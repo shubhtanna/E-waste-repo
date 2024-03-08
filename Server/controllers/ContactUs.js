@@ -1,6 +1,7 @@
 import {ContactUs} from '../models/ContactUs.js';
 import {mailSender} from '../utils/mailSender.js';
 import {contactUsEmail} from '../templates/contactFormRes.js';
+import { respond } from '../utils/response.js';
 
 export const contactUsController = async(req,res)=>{
     try{
@@ -11,18 +12,20 @@ export const contactUsController = async(req,res)=>{
         const contact = await ContactUs.create({name,email,message});
         console.log("Contact Response : ",contact);
 
-        return res.json({
-            success:true,
-            message:"Email for contact us successfully",
-        });
+        // return res.json({
+        //     success:true,
+        //     message:"Email for contact us successfully",
+        // });
+    return respond(res,200,"Email for contact us send successfully",contact);
 
 
     }catch(error){
         console.log("Error", error)
         console.log("Error message :", error.message)
-        return res.json({
-          success: false,
-          message: "Something went wrong...",
-        });
+        // return res.json({
+        //   success: false,
+        //   message: "Something went wrong...",
+        // });
+        return respond(res,200,"Something went wrong while sending email response for contact us ");
     }
 }
