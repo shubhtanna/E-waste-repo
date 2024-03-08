@@ -13,6 +13,7 @@ const vendorSchema = new mongoose.Schema({
     shopName: {
         type: String,
     },
+    
 })
 
 export const Vendor = mongoose.model("Vendor",vendorSchema)
