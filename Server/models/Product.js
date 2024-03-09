@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
-    image: {
+    productImage: {
         required: true,
         type: String,
     },
@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Brand",
     },
-    invoiceImmage: {
+    invoiceImage: {
         type: String,
     },
     modelName: {
