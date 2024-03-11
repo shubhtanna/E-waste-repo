@@ -10,9 +10,11 @@ const vendorSchema = new mongoose.Schema({
     },
     gstNumber: {
         type: String,
+        required:true,
     },
     gstInvoice: {
         type: String,
+        required:true
     },
     shopName: {
         type: String,
