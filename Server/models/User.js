@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-    name: {
+      name: {
         type: String,
         required: true,
       },
@@ -15,17 +15,17 @@ const schema = new mongoose.Schema({
         type: String,
         select: false,
       },
-      confirmpassword: {
+      confirmPassword: {
         required: true,
         type: String,
         select: false,
       },
-      Accounttype: {
+      accountType: {
         required: true,
         type: String,
         enum: ["Individual", "Vendor","Organization","Admin"],
       },
-      Address: {
+      address: {
         required: true,
         type: String,
       },

@@ -1,9 +1,10 @@
-import User from '../models/User'
-import Category from '../models/Category'
-import Product from '../models/Product'
-import Brand, { brand } from '../models/Brand'
+import {User} from '../models/User.js'
+import {Category} from '../models/Category.js'
+import {Product} from '../models/Product.js'
+import {Brand} from '../models/Brand.js'
+import {uploadImageToCloudinary} from '../utils/ImageUploder.js'
 
-exports.createProduct = async(req,res) => {
+export const createProduct = async(req,res) => {
     try{
         const {
             productName,
@@ -56,9 +57,9 @@ exports.createProduct = async(req,res) => {
 
         //Upload image to cloudanary 
 
-        // const productImageCloud = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+        const productImageCloud = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
 
-        // const invoiceImageCloud = await uploadImageToCloudinary(invoiceImage, process.env.FOLDER_NAME);
+        const invoiceImageCloud = await uploadImageToCloudinary(invoiceImage, process.env.FOLDER_NAME);
 
         //create an entry for new course
 
@@ -98,7 +99,7 @@ exports.createProduct = async(req,res) => {
     }
 }
 
-exports.getAllProducts = async(req,res) => {
+export const getAllProducts = async(req,res) => {
     try {
         const allProducts = await Product.find({});
 
@@ -117,7 +118,7 @@ exports.getAllProducts = async(req,res) => {
     }
 }
 
-exports.getOneProduct = async(req,res) => {
+export const getOneProduct = async(req,res) => {
     try{
         const {productId} = req.body;
 
@@ -148,7 +149,7 @@ exports.getOneProduct = async(req,res) => {
 }
 
 
-exports.updateProduct = async(req,res) => {
+export const updateProduct = async(req,res) => {
     try {
 
         const {
@@ -210,7 +211,7 @@ exports.updateProduct = async(req,res) => {
     }
 }
 
-exports.deleteProduct = async(req,res) => {
+export const deleteProduct = async(req,res) => {
     try{
         const {productId} = req.body;
 

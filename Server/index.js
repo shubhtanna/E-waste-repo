@@ -8,6 +8,7 @@ import { connectDB } from "./config/db.js";
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import { respond } from "./utils/response.js";
+import userRouter from "./routes/user.js";
 
 dotenv.config();
 
@@ -31,6 +32,8 @@ app.use(
 // )
 
 cloudinaryConnect();
+
+app.use("/api/v1/auth",userRouter);
 
 app.get("/", (req,res) => {
     return respond(res,"Your server is up and running",20,true)

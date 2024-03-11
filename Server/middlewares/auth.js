@@ -1,4 +1,4 @@
-exports.auth = async(req,res,next) => {
+export const auth = async(req,res,next) => {
     try{
 
         const token = req.cookies.token || req.body.token || req.header("authorisation").replace("Bearer ","");
@@ -34,7 +34,7 @@ exports.auth = async(req,res,next) => {
 }
 
 
-exports.isIndividual = async (req,res) => {
+export const isIndividual = async (req,res) => {
     try{
         if(req.user.Accounttype !== "Individual"){
             return res.staus(400).json({
@@ -52,7 +52,7 @@ exports.isIndividual = async (req,res) => {
     }
 }
 
-exports.isVendor = async (req,res) => {
+export const isVendor = async (req,res) => {
     try{
         if(req.user.Accounttype !== "Vendor"){
             return res.staus(400).json({
@@ -70,7 +70,7 @@ exports.isVendor = async (req,res) => {
     }
 }
 
-exports.isOrganization = async (req,res) => {
+export const isOrganization = async (req,res) => {
     try{
         if(req.user.Accounttype !== "Organization"){
             return res.staus(400).json({
@@ -88,7 +88,7 @@ exports.isOrganization = async (req,res) => {
     }
 }
 
-exports.isAdmin = async (req,res) => {
+export const isAdmin = async (req,res) => {
     try{
         if(req.user.Accounttype !== "Admin"){
             return res.staus(400).json({

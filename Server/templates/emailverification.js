@@ -1,4 +1,4 @@
-export const emailVerificationOtptemplate = (otp) => {
+export const emailverification = (otp) => {
     return `
     <!DOCTYPE html>
 	<html>
