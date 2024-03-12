@@ -58,3 +58,23 @@ export const deleteCategory = async(req,res)=>{
 
     }
 }
+
+export const getAllCategory = async(req,res) => {
+    try {
+
+        const allCategory = await Category.find({});
+
+        return res.status(200).json({
+            success:true,
+            message:"all category frtched successfully",
+            allCategory
+        })
+    } catch {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"All category not found",
+            error:error.message
+        })
+    }
+}
