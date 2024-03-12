@@ -7,6 +7,7 @@ const vendorSchema = new mongoose.Schema({
     },
     contactNumber : {
         type: Number,
+        required: true,
     },
     gstNumber: {
         type: String,
@@ -18,6 +19,7 @@ const vendorSchema = new mongoose.Schema({
     },
     shopName: {
         type: String,
+        required: true,
     },
     
 })

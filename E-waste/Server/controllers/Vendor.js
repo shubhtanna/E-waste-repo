@@ -1,6 +1,7 @@
 import { syncIndexes } from 'mongoose';
 import {User} from '../models/User.js';
 import { respond } from '../utils/response.js';
+import { Vendor } from '../models/Vendor.js';
 
 export const getShopByCity =  async(req,res)=>{
     try{
@@ -23,13 +24,12 @@ export const getShopByCity =  async(req,res)=>{
     }
 }
 
-exports.updateVendor = async(req,res) => {
+export const updateVendor = async(req,res) => {
     try{
 
         const id = req.user.id;
 
         const {
-            name = "",
             contactNumber,
             gstNumber = "",
             shopName
@@ -37,7 +37,7 @@ exports.updateVendor = async(req,res) => {
 
         const gstInvoice = req.files.gstInvoice;
 
-        if(!name || !gstInvoice || !gstInvoice ){
+        if(!gstInvoice || !gstInvoice ){
             return res.status(400).json({
                 success:false,
                 message:"All feilds are required"
@@ -47,13 +47,6 @@ exports.updateVendor = async(req,res) => {
         const userDetails = await User.findById(id);
         const vendorId = userDetails.vendorDetails;
         const vendorDetails = await Vendor.findById(vendorId);
-
-
-        const user = await User.findByIdAndUpdate(id , {
-            name
-        });
-
-        await user.save();
 
         vendorDetails.contactNumber = contactNumber;
         vendorDetails.gstNumber = gstNumber;
@@ -79,7 +72,7 @@ exports.updateVendor = async(req,res) => {
     }
 }
 
-exports.deleteAccount = async(req,res) => {
+export const deleteAccount = async(req,res) => {
     try {
         const id = req.user.id;
 
@@ -110,7 +103,7 @@ exports.deleteAccount = async(req,res) => {
     }
 }
 
-exports.getAllVendorDetails = async(req,res) => {
+export const getAllVendorDetails = async(req,res) => {
     try {
 
         const id = req.user.id;
@@ -134,7 +127,7 @@ exports.getAllVendorDetails = async(req,res) => {
     }
 }
 
-exports.intrestedProducts = async(req,res) => {
+export const intrestedProducts = async(req,res) => {
     try{
         const id = req.user.id;
 
