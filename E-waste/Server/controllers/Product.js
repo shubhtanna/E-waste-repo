@@ -9,9 +9,9 @@ export const createProduct = async(req,res) => {
     try{
         const {
             productName,
-            // category,
+            category,
             user,
-            // brandName,
+            brandName,
             modelName
         } = req.body;
 
@@ -19,33 +19,33 @@ export const createProduct = async(req,res) => {
 
         const invoiceImage = req.files.invoiceImageCloud;
 
-        if(!productName || !user || !invoiceImage || !modelName || !productImage){
+        if(!productName || !user || !invoiceImage || !modelName || !productImage || !category){
          
             return respond(res,"all fields are required when product is created",404,false);
         };
 
         const userId = req.user.id;
-        // const individualDetails = await User.findById(userId, {
-        //     AccountType:"Individual"
-        // });
+        const individualDetails = await User.findById(userId, {
+            AccountType:"Individual"
+        });
 
         if(!individualDetails){
           
             return respond(res,"Individual Not Found",404,false);
         }
 
-        const categoryDetails = await Category.findById({category});
+        const categoryDetails = await Category.find({name:category});
 
         if(!categoryDetails) {
             return respond(res,"Categories details Not Found",404,false);
         }
 
-        const brandDetails = await Brand.findById(brandName);
+        // const brandDetails = await Brand.findById(brandName);
 
-        if(!brandDetails) {
+        // if(!brandDetails) {
 
-            return respond(res,"Brand Not Found",404,false);
-        }
+        //     return respond(res,"Brand Not Found",404,false);
+        // }
 
         //Upload image to cloudanary 
 
@@ -67,7 +67,7 @@ export const createProduct = async(req,res) => {
         
 
         // await User.findByIdAndUpdate({
-        //     _id : individualDetails._id
+        //    name:category
         // },
         // {
         //     $push: {
