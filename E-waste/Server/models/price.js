@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const priceSchema = new mongoose.Schema({
     price:{
         type:Number,
-        required:true
+        required:true,
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,
