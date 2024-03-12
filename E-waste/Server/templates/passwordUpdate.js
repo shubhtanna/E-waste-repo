@@ -1,4 +1,4 @@
-export const passwordUpdate = (email, name) => {
+export const passwordUpdate = (name,email) => {
     return `
     <!DOCTYPE html>
     <html>
@@ -67,7 +67,7 @@ export const passwordUpdate = (email, name) => {
             </div>
             <div class="support">If you have any questions or need further assistance, please feel free to reach out to us
                 at
-                <a href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!
+                <a href="mailto:info@studynotion.com">info@ewaste.com</a>. We are here to help!
             </div>
         </div>
     </body>

@@ -1,24 +1,25 @@
-import { syncIndexes } from 'mongoose';
 import {User} from '../models/User.js';
+import { respond } from '../utils/response.js';
+import {Vendor} from '../models/Vendor.js';
 
 export const getShopByCity =  async(req,res)=>{
     try{
 
-        const {city,shopId} =  req.user;
-        console.log(city,shopId);
+        const {city,id} =  req.user;
+        console.log(city,id);
 
         //Not required according to me
         // if(!city || !shopId){
         //     return respond(res,404,"All fields are required");
         // }
         
-        const shop = await User.find({city:city});
+        const shop = await User.find({city:city,accountType:'Vendor'});
 
-        return respond(res,200,"All the Shops fetched by city",shop);
+        return respond(res,"All the Shops fetched by city",200,true,shop);
 
     }catch(error){
         console.log("Error in fetching shop by city : ",error);
-        return respond(res,500,"All the Shops are not fetched by city");
+        return respond(res,"All the Shops are not fetched by city",500,false);
     }
 }
 

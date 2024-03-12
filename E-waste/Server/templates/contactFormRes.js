@@ -1,4 +1,4 @@
-export const contactUsEmail = (email,firstname,lastname,message,phoneNo,countrycode) => {
+export const contactUsEmail = (name,email,message) => {
     return `<!DOCTYPE html>
     <html>
     
@@ -71,18 +71,17 @@ export const contactUsEmail = (email,firstname,lastname,message,phoneNo,countryc
                     src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo"></a>
             <div class="message">Contact Form Confirmation</div>
             <div class="body">
-                <p>Dear ${firstname} ${lastname},</p>
+                <p>Dear ${name}</p>
                 <p>Thank you for contacting us. We have received your message and will respond to you as soon as possible.
                 </p>
                 <p>Here are the details you provided:</p>
-                <p>Name: ${firstname} ${lastname}</p>
+                <p>Name: ${name}</p>
                 <p>Email: ${email}</p>
-                <p>Phone Number: ${phoneNo}</p>
                 <p>Message: ${message}</p>
                 <p>We appreciate your interest and will get back to you shortly. </p>
             </div>
             <div class="support">If you have any further questions or need immediate assistance, please feel free to reach
-                out to us at <a href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!</div>
+                out to us at <a href="mailto:info@studynotion.com">info@ewaste.com</a>. We are here to help!</div>
         </div>
     </body>
     

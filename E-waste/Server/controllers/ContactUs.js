@@ -1,22 +1,22 @@
-import {ContactUs} from '../models/ContactUs.js';
-import {mailSender} from '../utils/mailSender.js';
+import {Contact} from "../models/ContactUs.js"
+import { mailsender } from "../utils/mailSender.js";
 import {contactUsEmail} from '../templates/contactFormRes.js';
 import { respond } from '../utils/response.js';
 
-export const contactUsController = async(req,res)=>{
+export const contactUs = async(req,res)=>{
     try{
         const {name,email,message} = req.body;
 
-        const emailResponse = await mailSender(email,"Your data submit successfully",contactUsEmail(name,email,message));
+        const emailResponse = await mailsender(email,"Your data submit successfully",contactUsEmail(name,email,message));
 
-        const contact = await ContactUs.create({name,email,message});
+        const contact = await Contact.create({name,email,message});
         console.log("Contact Response : ",contact);
 
         // return res.json({
         //     success:true,
         //     message:"Email for contact us successfully",
         // });
-    return respond(res,200,"Email for contact us send successfully",contact);
+    return respond(res,"Email for contact us send successfully",200,true,contact);
 
 
     }catch(error){
@@ -26,6 +26,6 @@ export const contactUsController = async(req,res)=>{
         //   success: false,
         //   message: "Something went wrong...",
         // });
-        return respond(res,200,"Something went wrong while sending email response for contact us ");
+        return respond(res,"Something went wrong while sending email response for contact us",500,false);
     }
 }
