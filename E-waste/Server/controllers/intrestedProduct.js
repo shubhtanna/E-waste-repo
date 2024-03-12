@@ -74,3 +74,37 @@ export const getIntrestedUsersDetails = async(req,res) => {
         })
     }
 }
+
+export const getAllIntrestedUsers = async (req,res) => {
+    try {
+
+        const {product_id} = req.body;
+
+        if(!product_id){
+            return res.status(400).json({
+                success:false,
+                message:'please provide the product id'
+            })
+        }
+
+        const product = await Product.findById(product_id).populate(
+            {
+                path:"intrestedUser"
+            }
+        ).populate({
+            path:"price"
+        }).exec();
+
+        return res.status(200).json({
+            success:true,
+            data:product
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"error in geting all intrested users"
+        })
+    }
+}
