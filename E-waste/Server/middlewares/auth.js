@@ -1,3 +1,8 @@
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
+
+dotenv.config();
+
 export const auth = async(req,res,next) => {
     try{
 
@@ -34,10 +39,10 @@ export const auth = async(req,res,next) => {
 }
 
 
-export const isIndividual = async (req,res) => {
+export const isIndividual = async (req,res,next) => {
     try{
-        if(req.user.Accounttype !== "Individual"){
-            return res.staus(400).json({
+        if(req.user.accountType !== "Individual"){
+            return res.status(400).json({
                 success:false,
                 message:"This protected route for individual users only"
             })
@@ -54,7 +59,7 @@ export const isIndividual = async (req,res) => {
 
 export const isVendor = async (req,res) => {
     try{
-        if(req.user.Accounttype !== "Vendor"){
+        if(req.user.accountType !== "Vendor"){
             return res.staus(400).json({
                 success:false,
                 message:"This protected route for Vendor users only"
@@ -72,7 +77,7 @@ export const isVendor = async (req,res) => {
 
 export const isOrganization = async (req,res) => {
     try{
-        if(req.user.Accounttype !== "Organization"){
+        if(req.user.accountType !== "Organization"){
             return res.staus(400).json({
                 success:false,
                 message:"This protected route for Organization users only"
@@ -90,7 +95,7 @@ export const isOrganization = async (req,res) => {
 
 export const isAdmin = async (req,res) => {
     try{
-        if(req.user.Accounttype !== "Admin"){
+        if(req.user.accountType !== "Admin"){
             return res.staus(400).json({
                 success:false,
                 message:"This protected route for admin users only"

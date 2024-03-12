@@ -13,12 +13,6 @@ const schema = new mongoose.Schema({
       password: {
         required: true,
         type: String,
-        select: false,
-      },
-      confirmPassword: {
-        required: true,
-        type: String,
-        select: false,
       },
       accountType: {
         required: true,
@@ -67,6 +61,9 @@ const schema = new mongoose.Schema({
       },
       Location: {
         type: String,
+      },
+      token: {
+        type: String
       }
 });
 
