@@ -23,6 +23,8 @@ export const createProduct = async(req,res) => {
             return respond(res,"all fields are required when product is created",404,false);
         };
 
+        const userId = req.user.id;
+        const account = req.user.accountType;
         // const individualDetails = await User.findById(userId, {
         //     AccountType:"Individual"
         // });
