@@ -9,9 +9,8 @@ export const createProduct = async(req,res) => {
     try{
         const {
             productName,
-            // category,
-            user,
-            // brandName,
+            category,
+            brandName,
             modelName
         } = req.body;
 
@@ -19,22 +18,22 @@ export const createProduct = async(req,res) => {
 
         const invoiceImage = req.files.invoiceImageCloud;
 
-        if(!productName || !user || !invoiceImage || !modelName || !productImage){
+        if(!productName || !invoiceImage || !productImage || !category){
          
             return respond(res,"all fields are required when product is created",404,false);
         };
 
-        const userId = req.user.id;
         // const individualDetails = await User.findById(userId, {
         //     AccountType:"Individual"
         // });
 
-        if(!individualDetails){
-          
+        if(account !== "Individual"){
             return respond(res,"Individual Not Found",404,false);
         }
 
-        const categoryDetails = await Category.findById({category});
+        console.log("category: ", category);
+        const categoryDetails = await Category.findById({_id:category});
+        console.log("details:", categoryDetails);
 
         if(!categoryDetails) {
             return respond(res,"Categories details Not Found",404,false);
@@ -43,7 +42,6 @@ export const createProduct = async(req,res) => {
         const brandDetails = await Brand.findById(brandName);
 
         if(!brandDetails) {
-
             return respond(res,"Brand Not Found",404,false);
         }
 
@@ -58,37 +56,33 @@ export const createProduct = async(req,res) => {
         const newProduct = await Product.create({
             productName,
             category: categoryDetails._id,
-            user:individualDetails._id,
+            user:req.user.id,
             productImage: productImageCloud.secure_url,
             brandName:brandDetails._id,
             modelName,
             invoiceImage:invoiceImageCloud.secure_url,
         })
         
+        await User.findByIdAndUpdate({
+            _id : req.user.id
+        },
+        {
+            $push: {
+                products:newProduct._id
+            }
+        },
+        {new:true})
 
-        // await User.findByIdAndUpdate({
-        //     _id : individualDetails._id
-        // },
-        // {
-        //     $push: {
-        //         products:newProduct._id
-        //     }
-        // },
-        // {new:true})
-
-        // await Category.findByIdAndUpdate({
-        //     _id:categoryDetails._id
-        // },
-        // {
-        //     $push:{
-        //         products : newProduct._id
-        //     }
-        // },{new : true});
-
+        await Category.findByIdAndUpdate({
+            _id:categoryDetails._id
+        },
+        {
+            $push:{
+                products : newProduct._id
+            }
+        },{new : true});
 
         return respond(res,"Product Created successfully",200,true,newProduct);
-
-        
 
     } catch (error) {
         console.log(error);
@@ -125,13 +119,14 @@ export const getOneProduct = async(req,res) => {
             return res.status(400).json({
                 success:false,
                 message:"product is not found",
-                error:error.message
+                error:error.message,
             })
         }
 
         return res.status(200).json({
             success:true,
-            message:"product detail fetched successfully"
+            message:"product detail fetched successfully",
+            productDetails
         })
 
 
@@ -152,7 +147,6 @@ export const updateProduct = async(req,res) => {
         const {
             productName,
             category,
-            user,
             brandName,
             modelName
         } = req.body;
@@ -161,7 +155,7 @@ export const updateProduct = async(req,res) => {
 
         const invoiceImage = req.files.invoiceImageCloud;
 
-        if(!productName || !category || !user || !brandName ||!invoiceImage ||!modelName ||!productImage){
+        if(!productName || !category || !brandName ||!invoiceImage ||!modelName ||!productImage){
             return res.status(200).json({
                 sucess:false,
                 message:"all fields are required when product is updated"
@@ -177,22 +171,21 @@ export const updateProduct = async(req,res) => {
             })
         }
 
-        // const productImageCloud = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+        const productImageCloud = await uploadImageToCloudinary(productImage, process.env.FOLDER_NAME);
 
-        // const invoiceImageCloud = await uploadImageToCloudinary(invoiceImage, process.env.FOLDER_NAME);
+        const invoiceImageCloud = await uploadImageToCloudinary(invoiceImage, process.env.FOLDER_NAME);
 
-        const updatedProduct = await findByIdAndUpdate({_id:productId},
+        const updatedProduct = await Product.findByIdAndUpdate({_id:productId},
             {
                 productName:productName,
                 category:category,
-                user:user,
                 brandName:brandName,
                 modelName:modelName,
-                productImage:productImageCloud,
-                invoiceImage:invoiceImageCloud
+                productImage:productImageCloud.secure_url,
+                invoiceImage:invoiceImageCloud.secure_url
             },{new:true});
 
-        return res.staus(200).json({
+        return res.status(200).json({
             success:true,
             message:"Product updated successfully",
             data:updatedProduct,
@@ -200,9 +193,9 @@ export const updateProduct = async(req,res) => {
 
     } catch (error) {
         console.log(error);
-        return res.staus(500).json({
+        return res.status(500).json({
             success:false,
-            message:"Course is not updated",
+            message:"product is not updated",
             error:error.message
         })
     }
@@ -219,7 +212,7 @@ export const deleteProduct = async(req,res) => {
             })
         }
 
-        const product = await findByIdAndDelete({_id:productId});
+        const product = await Product.findByIdAndDelete(productId);
 
         return res.status(200).json({
             success:true,
@@ -228,7 +221,7 @@ export const deleteProduct = async(req,res) => {
 
     } catch (error) {
         console.log(error);
-        return res.staus(200).json({
+        return res.status(200).json({
             success:false,
             message:"Product is not deleted",
             error:error.message
