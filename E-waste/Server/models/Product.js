@@ -28,11 +28,16 @@ const productSchema = new mongoose.Schema({
     modelName: {
         type: String,
     },
-    price:[
+    intrestedUser: [
         {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Price"
-    }]
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    price: [
+        {
+            type:Number,
+        }]
 })
 
 export const product = mongoose.model("Product", productSchema);
