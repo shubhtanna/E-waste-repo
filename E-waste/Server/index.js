@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import { respond } from "./utils/response.js";
 import userRouter from "./routes/user.js";
 import individualRouter from "./routes/individual.js";
+import vendorRouter from  "./routes/vendor.js"
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ cloudinaryConnect();
 
 app.use("/api/v1/auth",userRouter);
 app.use("/api/v1/individual",individualRouter)
+app.use("/api/v1/vendor",vendorRouter)
 
 app.get("/", (req,res) => {
     return respond(res,"Your server is up and running",20,true)

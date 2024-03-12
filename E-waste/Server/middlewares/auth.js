@@ -60,7 +60,7 @@ export const isIndividual = async (req,res,next) => {
 export const isVendor = async (req,res) => {
     try{
         if(req.user.accountType !== "Vendor"){
-            return res.staus(400).json({
+            return res.status(400).json({
                 success:false,
                 message:"This protected route for Vendor users only"
             })

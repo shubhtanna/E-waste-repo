@@ -1,7 +1,7 @@
 const { Individual } = require("../models/Individual");
 const { User } = require("../models/User");
 
-exports.updateIndividual = async(req,res) => {
+export const updateIndividual = async(req,res) => {
     try {
         const id = req.user.id;
 
@@ -49,7 +49,7 @@ exports.updateIndividual = async(req,res) => {
     }
 }
 
-exports.delteAccount = async(req,res) => {
+export const delteAccount = async(req,res) => {
     try {
 
         const id = req.user.id;
@@ -81,7 +81,7 @@ exports.delteAccount = async(req,res) => {
     }
 }
 
-exports.getAllUserDetails = async(req,res) => {
+export const getAllUserDetails = async(req,res) => {
     try{
         const id = req.user.id;
 
@@ -103,7 +103,7 @@ exports.getAllUserDetails = async(req,res) => {
     }
 }
 
-exports.getProductsPost = async(req,res) => {
+export const getProductsPost = async(req,res) => {
     try {
         const id = req.user.id;
         const userDetails = await User.findById({_id:id}).populate("products").exec();

@@ -1,4 +1,3 @@
-import { syncIndexes } from 'mongoose';
 import {User} from '../models/User.js';
 import { respond } from '../utils/response.js';
 import { Vendor } from '../models/Vendor.js';
