@@ -1,6 +1,10 @@
 import {User} from '../models/User.js';
 import { respond } from '../utils/response.js';
 import { Vendor } from '../models/Vendor.js';
+import dotenv from "dotenv"
+import { uploadImageToCloudinary } from '../utils/ImageUploder.js';
+
+dotenv.config();
 
 export const getShopByCity =  async(req,res)=>{
     try{
@@ -36,12 +40,18 @@ export const updateVendor = async(req,res) => {
 
         const gstInvoice = req.files.gstInvoice;
 
-        if(!gstInvoice || !gstInvoice ){
+        if(!gstNumber || !gstInvoice ){
             return res.status(400).json({
                 success:false,
                 message:"All feilds are required"
             })
         }
+
+        const gstInvoiceImage = await uploadImageToCloudinary(
+            gstInvoice,
+            process.env.FOLDER_NAME
+          )
+          console.log(gstInvoiceImage)
 
         const userDetails = await User.findById(id);
         const vendorId = userDetails.vendorDetails;
@@ -50,7 +60,7 @@ export const updateVendor = async(req,res) => {
         vendorDetails.contactNumber = contactNumber;
         vendorDetails.gstNumber = gstNumber;
         vendorDetails.shopName = shopName;
-        vendorDetails.gstInvoice = gstInvoice;
+        vendorDetails.gstInvoice = gstInvoiceImage.secure_url;
 
         await vendorDetails.save()
 
@@ -104,17 +114,15 @@ export const deleteAccount = async(req,res) => {
 
 export const getAllVendorDetails = async(req,res) => {
     try {
-
-        const id = req.user.id;
-
-        const vendorDetails = await User.findById(id).populate("vendorDetails");
+        
+        const vendorDetails = await User.find({accountType:"Vendor"}).populate("vendorDetails").exec();
+        console.log("vendordetails: ",vendorDetails)
 
         return res.status(200).json({
             success:true,
             message:"User data fetched successfully",
             data:vendorDetails
         });
-
 
     } catch (error) {
         console.log(error);

@@ -1,16 +1,26 @@
-import { respond } from "../utils/response";
+import { respond } from "../utils/response.js";
 import { Brand } from '../models/Brand.js';
+import { Category } from "../models/Category.js";
 
 export const createBrand = async(req,res)=>{
     try{
        
-        const { name } = req.body;
+        const { name , categoryId } = req.body;
 
-        if(!name){
+        if(!name || !categoryId){
             return respond(res,"Brand Name is missing ",404,false);
         }
 
-        const brand = await Brand.create({name});
+        const brand = await Brand.create({name,categoryId:categoryId});
+
+        await Category.findByIdAndUpdate({
+            _id:categoryId
+        },
+        {
+            $push:{
+                Brand : brand._id
+            }
+        },{new : true});
         
         return respond(res,"Brands added successfully",200,true,brand);
         
@@ -24,17 +34,18 @@ export const createBrand = async(req,res)=>{
 
 export const updateBrand = async(req,res)=>{
     try{
-        const {id,name}  = req.body;
+        const {brandId,name}  = req.body;
 
-      const brandExist =  await Brand.findByIdAndUpdate(id,
-        { $push : {name:name}},{new : true}
-        );
+      const brandExist =  await Brand.findByIdAndUpdate(brandId,{
+        name:name
+        });
+        
 
       if(!brandExist){
         return respond(res,"There is no such brand",500,false);
       }
       
-      return respond(res,"Brands updated successfully",200,true,brand);
+      return respond(res,"Brands updated successfully",200,true,brandExist);
       
 
     }catch(error){
@@ -47,9 +58,9 @@ export const updateBrand = async(req,res)=>{
 export const deleteBrand = async(req,res)=>{
     try{
 
-        const {id} = req.body;
+        const {brandId} = req.body;
         
-       await Brand.findByIdAndDelete(id);
+       await Brand.findByIdAndDelete(brandId);
 
        return respond(res,"Delete brand successfully",200,true);
 

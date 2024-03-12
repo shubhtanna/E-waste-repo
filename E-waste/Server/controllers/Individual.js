@@ -1,32 +1,17 @@
-const { Individual } = require("../models/Individual");
-const { User } = require("../models/User");
+import { User } from "../models/User.js";
+import { Individual } from "../models/Individual.js";
 
 export const updateIndividual = async(req,res) => {
     try {
         const id = req.user.id;
 
         const {
-            name = "",
             contactNumber
         } = req.body;
-
-        if(!name) {
-            return res.status(400).json({
-                success:false,
-                message:"All feilds are required in upadating the individual"
-            });
-        }
 
         const userDetails = await User.findById(id);
         const individualId = userDetails.individualDetails;
         const individualDetails = await Individual.findById(individualId);
-
-
-        const user = await User.findByIdAndUpdate(id, {
-            name
-        })
-
-        await user.save();
 
         individualDetails.contactNumber = contactNumber;
 
@@ -83,9 +68,7 @@ export const delteAccount = async(req,res) => {
 
 export const getAllUserDetails = async(req,res) => {
     try{
-        const id = req.user.id;
-
-        const userDetails = await User.findById(id).populate("individualDetails").exec();
+        const userDetails = await User.find({accountType:"Individual"}).populate("individualDetails").exec();
         console.log(userDetails);
 
         return res.status(200).json({

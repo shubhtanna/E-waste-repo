@@ -3,14 +3,15 @@ import {Category} from '../models/Category.js'
 import {Product} from '../models/Product.js'
 import {Brand} from '../models/Brand.js'
 import {uploadImageToCloudinary} from '../utils/ImageUploder.js'
+import { respond } from '../utils/response.js'
 
 export const createProduct = async(req,res) => {
     try{
         const {
             productName,
-            category,
+            // category,
             user,
-            brandName,
+            // brandName,
             modelName
         } = req.body;
 
@@ -18,46 +19,37 @@ export const createProduct = async(req,res) => {
 
         const invoiceImage = req.files.invoiceImageCloud;
 
-        if(!productName || !category || !user || !brandName ||!invoiceImage ||!modelName ||!productImage){
-            return res.status(200).json({
-                sucess:false,
-                message:"all fields are required when product is created"
-            })
+        if(!productName || !user || !invoiceImage || !modelName || !productImage){
+         
+            return respond(res,"all fields are required when product is created",404,false);
         };
 
         const userId = req.user.id;
-        const individualDetails = await User.findById(userId, {
-            Accounttype:"Individual"
-        });
+        // const individualDetails = await User.findById(userId, {
+        //     AccountType:"Individual"
+        // });
 
         if(!individualDetails){
-            return res.status(404).json({
-                success:false,
-                message:"indivisula user not found"
-            })
+          
+            return respond(res,"Individual Not Found",404,false);
         }
 
-        const categoryDetails = await Category.findById(category);
+        const categoryDetails = await Category.findById({category});
 
         if(!categoryDetails) {
-            return res.status(404).json({
-                success:false,
-                message:"Category Details not found"
-            })
+            return respond(res,"Categories details Not Found",404,false);
         }
 
-        const brandDetails = await Brand.findById(brand);
+        const brandDetails = await Brand.findById(brandName);
 
         if(!brandDetails) {
-            return res.status(404).json({
-                success:false,
-                message:"Brand Not Found"
-            })
+
+            return respond(res,"Brand Not Found",404,false);
         }
 
         //Upload image to cloudanary 
 
-        const productImageCloud = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+        const productImageCloud = await uploadImageToCloudinary(productImage, process.env.FOLDER_NAME);
 
         const invoiceImageCloud = await uploadImageToCloudinary(invoiceImage, process.env.FOLDER_NAME);
 
@@ -65,37 +57,42 @@ export const createProduct = async(req,res) => {
 
         const newProduct = await Product.create({
             productName,
-            category,
+            category: categoryDetails._id,
             user:individualDetails._id,
             productImage: productImageCloud.secure_url,
             brandName:brandDetails._id,
             modelName,
             invoiceImage:invoiceImageCloud.secure_url,
         })
+        
 
-        await User.findByIdAndUpdate({
-            _id : individualDetails._id
-        },
-        {
-            $push: {
-                products:newProduct._id
-            }
-        },
-        {new:true})
+        // await User.findByIdAndUpdate({
+        //     _id : individualDetails._id
+        // },
+        // {
+        //     $push: {
+        //         products:newProduct._id
+        //     }
+        // },
+        // {new:true})
 
-        return res.status(200).json({
-            success:true,
-            message:"Product Created successfully",
-            data: newProduct
-        })
+        // await Category.findByIdAndUpdate({
+        //     _id:categoryDetails._id
+        // },
+        // {
+        //     $push:{
+        //         products : newProduct._id
+        //     }
+        // },{new : true});
+
+
+        return respond(res,"Product Created successfully",200,true,newProduct);
+
+        
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
-            success:false,
-            message:"Product is not created",
-            error:error.message
-        })
+        return respond(res,"Product is not created",500,false);
     }
 }
 

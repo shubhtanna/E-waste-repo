@@ -1,14 +1,15 @@
-import {Category} from '../models/Category.js';
+import {Category} from "../models/Category.js"
+import { respond } from '../utils/response.js';
 
 export const createCategory = async(req,res)=>{
     try{
-        const {categoryName,productId} = req.body;
+        const {categoryName} = req.body;
 
         if(!categoryName){
             return respond(res,"category name is not mentioned",404,false);
         }
         
-        const category = Category.create({categoryName,productId});
+        const category = Category.create({categoryName});
 
         return respond(res,"Categories added successfully",200,true,category);
 
@@ -28,14 +29,12 @@ export const updateCategory = async(req,res)=>{
             return respond(res,"update category",404,false);
         }
 
-        await Category.findByIdAndUpdate(id,{
-            $push:{
-                name : categoryName,
-            }
+        await Category.findByIdAndUpdate(categoryId,{
+            categoryName: categoryName
         },
         {new : true});
         
-        return respond(res,"Update category ",200,true);
+        return respond(res,"Update category ",200,true,Category.name);
        
     }catch(error){
         console.log("Error in creating category : ",error);

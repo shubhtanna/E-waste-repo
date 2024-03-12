@@ -4,6 +4,6 @@ import { auth, isVendor } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/updatevendordetails",auth,isVendor,updateVendor)
+router.put("/updatevendordetails",auth,isVendor,updateVendor)
 
 export default router;

@@ -7,19 +7,19 @@ const vendorSchema = new mongoose.Schema({
     },
     contactNumber : {
         type: Number,
-        required: true,
+        
     },
     gstNumber: {
         type: String,
-        required:true,
+        
     },
     gstInvoice: {
         type: String,
-        required:true
+        
     },
     shopName: {
         type: String,
-        required: true,
+        
     },
     
 })

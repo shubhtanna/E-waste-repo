@@ -57,7 +57,7 @@ export const isIndividual = async (req,res,next) => {
     }
 }
 
-export const isVendor = async (req,res) => {
+export const isVendor = async (req,res,next) => {
     try{
         if(req.user.accountType !== "Vendor"){
             return res.status(400).json({
@@ -93,10 +93,10 @@ export const isOrganization = async (req,res) => {
     }
 }
 
-export const isAdmin = async (req,res) => {
+export const isAdmin = async (req,res,next) => {
     try{
         if(req.user.accountType !== "Admin"){
-            return res.staus(400).json({
+            return res.status(400).json({
                 success:false,
                 message:"This protected route for admin users only"
             })

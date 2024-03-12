@@ -5,6 +5,10 @@ const BrandSchema = new mongoose.Schema ({
         type: String,
         required: true,
     },
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+    }
 })
 
-export const brand = mongoose.model("Brand", BrandSchema);
+export const Brand = mongoose.model("Brand", BrandSchema);
