@@ -1,0 +1,48 @@
+
+.destImg{
+    height:220px;
+    width:100%;
+    position:relative;
+    overflow:hidden;
+    border-radius: 0.5rem;
+
+}
+.overLayInfo{
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+    /* background: linear-gradient(rgba(0,0,0,0.846),rgba(0,0,0,0.759)); */
+    background: linear-gradient(rgba(0,66,37,0.846),rgba(0,66,37,0.759));
+    width: 100%;
+    bottom: 0;
+    height:0;
+    /* height:100%; */
+    flex-direction: column;
+    overflow: hidden;
+
+}
+
+.overLayInfo h3{
+    color: hsl(0,0%,100%);
+    font-weight: 700;
+    font-style: italic;
+}
+.overLayInfo p{
+    opacity:0.7;
+    font-size: 13px;
+    color: hsl(0,0%,100%);
+}
+
+.destImg:hover .overLayInfo{
+    overflow: visible;
+    display: block;
+    padding:1rem 1.5rem;
+    height:auto;
+    
+}
+
+.destImage:hover h3{
+    color:white;
+}
