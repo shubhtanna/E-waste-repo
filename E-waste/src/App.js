@@ -1,11 +1,10 @@
 import "./App.css";
-import Category from "./cc/Category";
 
 
 function App() {
   return (
     <div>
-      
+      Hey Code Huslers keep it up
     </div>
   );
 }

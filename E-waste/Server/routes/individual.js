@@ -8,7 +8,6 @@ const router = express.Router();
 router.get("/getshopbycity",auth,isIndividual,getShopByCity)
 router.post("/createproduct",auth,isIndividual,createProduct)
 router.put("/updateindividualdetails",auth,isIndividual,updateIndividual)
-router.delete("/deleteaccount",auth,deleteAccount)
 router.delete("/deleteproduct",auth,isIndividual,deleteProduct)
 router.put("/updateproduct",auth,isIndividual,updateProduct)
 router.get("/getuserproducts",auth,isIndividual,getProductsPost)

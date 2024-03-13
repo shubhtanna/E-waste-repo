@@ -2,7 +2,7 @@ import {Product} from "../models/Product.js";
 import { User } from "../models/User.js";
 import { mailsender } from "../utils/mailSender.js";
 
-export const getIntrestedUsersDetails = async(req,res) => {
+export const addintrest = async(req,res) => {
     try {
         // console.log("product id:",req)
         const {product_id} = req.body;

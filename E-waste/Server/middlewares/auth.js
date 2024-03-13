@@ -6,7 +6,7 @@ dotenv.config();
 export const auth = async(req,res,next) => {
     try{
 
-        const token = req.cookies.token || req.body.token || req.header("authorisation").replace("Bearer ","");
+        const token = req.cookies.token || req.body.token || req.header("authorization").replace("Bearer ","");
 
         if(!token){
             return res.status(400).json({
