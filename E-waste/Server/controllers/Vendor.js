@@ -3,6 +3,7 @@ import { respond } from '../utils/response.js';
 import { Vendor } from '../models/Vendor.js';
 import dotenv from "dotenv"
 import { uploadImageToCloudinary } from '../utils/ImageUploder.js';
+import { Product } from '../models/Product.js';
 
 dotenv.config();
 
@@ -155,3 +156,4 @@ export const intrestedProducts = async(req,res) => {
 
     }
 }
+
