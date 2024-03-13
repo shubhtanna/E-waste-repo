@@ -14,6 +14,9 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    city:{
+        type:String,
+    },
     productImage: {
         required: true,
         type: String,
@@ -37,7 +40,8 @@ const productSchema = new mongoose.Schema({
     price: [
         {
             type:Number,
-        }]
+        }],
+    
 })
 
 export const Product = mongoose.model("Product", productSchema);

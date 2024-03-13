@@ -11,27 +11,30 @@ export const createProduct = async(req,res) => {
             productName,
             category,
             brandName,
-            modelName
+            modelName,
         } = req.body;
+
+        const city = req.user.city;
 
         const productImage = req.files.productImageCloud;
 
         const invoiceImage = req.files.invoiceImageCloud;
 
-        if(!productName || !invoiceImage || !productImage || !category){
+        if(!productName || !category || !productImage || !invoiceImage){
          
             return respond(res,"all fields are required when product is created",404,false);
         };
 
         const userId = req.user.id;
-        const account = req.user.accountType;
-        // const individualDetails = await User.findById(userId, {
-        //     AccountType:"Individual"
-        // });
+        const individualDetails = await User.findById(userId, {
+            AccountType:"Individual",
+        });
 
-        if(account !== "Individual"){
-            return respond(res,"Individual Not Found",404,false);
-        }
+        console.log(individualDetails);
+
+        // if(account !== "Individual"){
+        //     return respond(res,"Individual Not Found",404,false);
+        // }
 
         console.log("category: ", category);
         const categoryDetails = await Category.findById({_id:category});
@@ -58,12 +61,13 @@ export const createProduct = async(req,res) => {
         const newProduct = await Product.create({
             productName,
             category: categoryDetails._id,
-            user:req.user.id,
+            individual:individualDetails._id,
+            city:city,
             productImage: productImageCloud.secure_url,
             brandName:brandDetails._id,
             modelName,
             invoiceImage:invoiceImageCloud.secure_url,
-        })
+        });
         
         await User.findByIdAndUpdate({
             _id : req.user.id
@@ -94,7 +98,10 @@ export const createProduct = async(req,res) => {
 
 export const getAllProducts = async(req,res) => {
     try {
-        const allProducts = await Product.find({});
+
+        
+        const location = req.user.city;
+        const allProducts = await Product.find({city:location})
 
         return res.status(200).json({
             success:true,
